@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    window.dispatchEvent(new Event("logout"));
+    navigate("/");
   };
 
   return (
@@ -53,6 +71,24 @@ const Header = () => {
               Contact Us
             </a>
           </li>
+          {user ? (
+            <>
+              <li className="nav-item">
+                <span className="nav-link">Welcome, {user.username}</span>
+              </li>
+              <li className="nav-item">
+                <button onClick={handleLogout} className="nav-link logout-btn">
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className="nav-item">
+              <Link to="/auth" className="nav-link">
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>
