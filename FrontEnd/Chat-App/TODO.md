@@ -1,8 +1,6 @@
-# TODO: Add Styling to Header and Footer
+# TODO for About Us and Contact Us Pages
 
-## Tasks
-
-- [ ] Update Header.jsx: Add box-shadow, improve hamburger animation, add smooth transitions
-- [ ] Update Footer.jsx: Add hover animations to social icons, improve spacing, add subtle animations
-- [ ] Test the styling changes
-- [ ] Run the development server to verify changes
+- [ ] Update App.jsx to import Aboutus and Contact components
+- [ ] Create Aboutus.jsx component with company description and carousel
+- [ ] Create Contact.jsx component with form, map, and contact info
+- [ ] Run the app to test the new pages
