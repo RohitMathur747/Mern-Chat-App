@@ -1,5 +1,6 @@
-# TODO: Add Login Menu to Header
+# TODO for About Us and Contact Us Pages
 
-- [ ] Modify Header.jsx to add authentication state management and conditional rendering for login/logout
-- [ ] Test login flow and logout functionality
-- [ ] Verify mobile responsiveness
+- [ ] Update App.jsx to import Aboutus and Contact components
+- [ ] Create Aboutus.jsx component with company description and carousel
+- [ ] Create Contact.jsx component with form, map, and contact info
+- [ ] Run the app to test the new pages

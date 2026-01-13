@@ -62,14 +62,14 @@ const Header = () => {
             </a>
           </li>
           <li className="nav-item">
-            <a href="#about" className="nav-link">
+            <Link to="/about" className="nav-link">
               About Us
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a href="#contact" className="nav-link">
+            <Link to="/contact" className="nav-link">
               Contact Us
-            </a>
+            </Link>
           </li>
           {user ? (
             <>
