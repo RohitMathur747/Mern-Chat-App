@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./Todo.css";
+import jsPDF from "jspdf";
+import * as XLSX from "xlsx";
+import { Document, Packer, Paragraph, TextRun } from "docx";
 
 const Todo = ({ user }) => {
   const [formData, setFormData] = useState({
@@ -21,6 +24,8 @@ const Todo = ({ user }) => {
   const [errors, setErrors] = useState({});
   const [todos, setTodos] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [selectedTodo, setSelectedTodo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,7 +94,8 @@ const Todo = ({ user }) => {
   };
 
   const handleView = (todo) => {
-    alert(`Details:\n${JSON.stringify(todo, null, 2)}`);
+    setSelectedTodo(todo);
+    setShowModal(true);
   };
 
   const handleEdit = (todo) => {
@@ -119,6 +125,60 @@ const Todo = ({ user }) => {
     });
     setEditingId(null);
     setErrors({});
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedTodo(null);
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Todo Details", 10, 10);
+    let y = 20;
+    Object.entries(selectedTodo).forEach(([key, value]) => {
+      doc.text(`${key}: ${value}`, 10, y);
+      y += 10;
+    });
+    doc.save("todo-details.pdf");
+  };
+
+  const downloadExcel = () => {
+    const ws = XLSX.utils.json_to_sheet([selectedTodo]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Todo");
+    XLSX.writeFile(wb, "todo-details.xlsx");
+  };
+
+  const downloadWord = async () => {
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [new TextRun("Todo Details")],
+            }),
+            ...Object.entries(selectedTodo).map(
+              ([key, value]) =>
+                new Paragraph({
+                  children: [new TextRun(`${key}: ${value}`)],
+                })
+            ),
+          ],
+        },
+      ],
+    });
+    const buffer = await Packer.toBuffer(doc);
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "todo-details.docx";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -328,6 +388,37 @@ const Todo = ({ user }) => {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {showModal && selectedTodo && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Todo Details</h3>
+              <button className="close-btn" onClick={closeModal}>
+                &times;
+              </button>
+            </div>
+            <div className="todo-details">
+              {Object.entries(selectedTodo).map(([key, value]) => (
+                <p key={key}>
+                  <strong>{key}:</strong> {value}
+                </p>
+              ))}
+            </div>
+            <div className="download-buttons">
+              <button className="download-btn" onClick={downloadPDF}>
+                Download PDF
+              </button>
+              <button className="download-btn" onClick={downloadExcel}>
+                Download Excel
+              </button>
+              <button className="download-btn" onClick={downloadWord}>
+                Download Word
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
