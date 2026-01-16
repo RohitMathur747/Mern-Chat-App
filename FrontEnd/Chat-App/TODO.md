@@ -1,12 +1,34 @@
-# TODO: Modify Todo Component for Table Display
+# TODO for Todo Details Display and Download Feature
 
-- [x] Add state for todos list (array) and editing ID (null or index/id)
-- [x] Modify handleSubmit to add new todo or update existing based on editing state
-- [x] Replace submittedData JSON display with a table component
-- [x] Add table columns: Name, Email, Role, Customer, Title, Assign To, Status, Created At, Updated At, Actions
-- [x] Implement View action: alert with todo details
-- [x] Implement Edit action: set editing ID and populate form with selected todo data
-- [x] Implement Delete action: remove todo from list
-- [x] Update submit button text: "Submit" for new, "Update" for editing
-- [x] Add cancel button when editing to reset form and editing state
-- [x] Add CSS for table and cancel button
+## Steps to Complete
+
+1. **Modify handleView function in Todo.jsx**
+
+   - Change from alert to displaying details in a modal or detailed view section.
+   - Show key-value pairs for the selected todo item.
+
+2. **Add modal state and UI**
+
+   - Add state variables for showing/hiding the details modal.
+   - Create a modal component or section to display the todo details in key-value format.
+
+3. **Add download buttons**
+
+   - Below the details display, add buttons for downloading in .doc, .pdf, and .xlsx formats.
+
+4. **Implement download functionality**
+
+   - Install necessary packages (e.g., jsPDF for PDF, xlsx for Excel, docx for Word).
+   - Create functions to generate and download files based on the todo data.
+
+5. **Test the feature**
+   - Ensure the modal opens correctly, displays details, and downloads work.
+   - Check for any errors or improvements needed.
+
+## Progress Tracking
+
+- [x] Step 1: Modify handleView
+- [x] Step 2: Add modal state and UI
+- [x] Step 3: Add download buttons
+- [x] Step 4: Implement download functionality
+- [x] Step 5: Test the feature
